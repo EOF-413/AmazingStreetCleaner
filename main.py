@@ -6,7 +6,7 @@ from PIL import ImageGrab
 from PyQt5.QtWidgets import QApplication, QLabel
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, QObject
 from PyQt5.QtGui import QFont, QColor, QPainter, QBrush, QPen
-import keyboard
+from pynput import keyboard
 from config import KEY_MAP, HOLD_TIME, CYCLE_DELAY, COOLDOWN_AFTER_PRESS
 from core import Matcher, press_key, release_all, get_region
 
@@ -72,13 +72,37 @@ class App:
         self.enabled = False
         self.running = True
         self.loop_thread = None
+        self.listener = None
+        
         self.qt_app = QApplication.instance() or QApplication(sys.argv)
         self.signals = Signals()
         self.overlay = OverlayWindow(self.signals)
         self.overlay.show()
-        keyboard.add_hotkey('f9', self.toggle)
-        keyboard.add_hotkey('esc', self.cleanup)
+        
+        self.start_listener()
         print("[READY] F9 - старт/стоп | ESC - выход")
+
+    def start_listener(self):
+        def on_press(key):
+            try:
+                if key == keyboard.Key.f9:
+                    print("[DEBUG] F9 pressed")
+                    self.toggle()
+                    return False
+                elif key == keyboard.Key.esc:
+                    print("[DEBUG] ESC pressed")
+                    self.cleanup()
+                    return False
+            except:
+                pass
+            return True
+
+        if self.listener:
+            self.listener.stop()
+        
+        self.listener = keyboard.Listener(on_press=on_press)
+        self.listener.daemon = True
+        self.listener.start()
 
     def loop(self):
         while self.running:
@@ -109,11 +133,13 @@ class App:
             if self.loop_thread is None or not self.loop_thread.is_alive():
                 self.loop_thread = threading.Thread(target=self.loop, daemon=True)
                 self.loop_thread.start()
+            self.start_listener()
 
     def stop(self):
         self.enabled = False
         release_all()
         self.signals.update_overlay.emit("⚫ Ожидание F9", "#888888", 999999)
+        self.start_listener()
 
     def toggle(self):
         if self.enabled:
@@ -125,6 +151,8 @@ class App:
         self.running = False
         self.enabled = False
         release_all()
+        if self.listener:
+            self.listener.stop()
         if hasattr(self, 'qt_app'):
             self.qt_app.quit()
         sys.exit(0)
