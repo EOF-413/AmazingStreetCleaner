@@ -19,41 +19,31 @@ SC = {
 
 KEYEVENTF_KEYDOWN = 0x0000
 KEYEVENTF_KEYUP = 0x0002
-KEYEVENTF_SCANCODE = 0x0008
 KEYEVENTF_EXTENDEDKEY = 0x0001
-
 
 def press_key(key):
     try:
         if key not in VK:
-            print(f"[WARNING] Неизвестная клавиша: {key}")
             return
-
         vk = VK[key]
         sc = SC.get(key, 0)
-
         if key in ['alt', 'shift', 'ctrl']:
             user32.keybd_event(vk, sc, KEYEVENTF_EXTENDEDKEY, 0)
         else:
             user32.keybd_event(vk, sc, KEYEVENTF_KEYDOWN, 0)
-
         time.sleep(1.5)
-
         if key in ['alt', 'shift', 'ctrl']:
             user32.keybd_event(vk, sc, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0)
         else:
             user32.keybd_event(vk, sc, KEYEVENTF_KEYUP, 0)
-
-    except Exception as e:
-        print(f"[ERROR] Ошибка при нажатии {key}: {e}")
-
+    except:
+        pass
 
 def release_all():
     for key in VK:
         try:
             vk = VK[key]
             sc = SC.get(key, 0)
-
             if key in ['alt', 'shift', 'ctrl']:
                 user32.keybd_event(vk, sc, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0)
             else:
