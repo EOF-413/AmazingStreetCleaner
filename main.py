@@ -1,5 +1,5 @@
 import sys
-
+import keyboard
 from time import sleep
 from threading import Thread
 from logging import basicConfig, ERROR, exception
@@ -7,7 +7,6 @@ from os import path
 
 import numpy as np
 from PIL import ImageGrab
-from pynput import keyboard
 from PyQt5.QtWidgets import QApplication
 
 from config import load_config
@@ -38,18 +37,10 @@ class App:
         self.enabled = False
         self.running = True
         self.loop_thread = None
-        self.listener = None
         self.gui = None
 
-        self.listener = keyboard.Listener(on_press=self._on_press)
-        self.listener.daemon = True
-        self.listener.start()
-
-    def _on_press(self, key):
-        if key == keyboard.Key.f9:
-            self.toggle()
-            return False
-        return True
+        # Регистрируем глобальную горячую клавишу F9
+        keyboard.add_hotkey('f9', self.toggle, suppress=True)
 
     def loop(self):
         while self.running:
@@ -107,8 +98,7 @@ class App:
         self.running = False
         self.enabled = False
         release_all()
-        if self.listener:
-            self.listener.stop()
+        keyboard.unhook_all()      # отключаем все горячие клавиши
 
 
 if __name__ == '__main__':
@@ -118,10 +108,11 @@ if __name__ == '__main__':
         auto_app = App()
         window = MainWindow(auto_app)
         auto_app.gui = window
-        window.log_info("Нажмите F9 для старта")
+        window.log_info("Нажмите F9 для старта (требуются права администратора)")
         window.show()
         exit_code = app.exec_()
 
+        auto_app.cleanup()
         sys.exit(exit_code)
     except Exception as e:
         import traceback
