@@ -11,7 +11,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
-<<<<<<< HEAD
 .Python
 env/
 venv/
@@ -34,7 +33,6 @@ build/
 
 # Project specific
 *.log
-*.ico
 *.exe
 *.pyd
 *.dll
@@ -76,46 +74,6 @@ pip-delete-this-directory.txt
 .dmypy.json
 dmypy.json
 .tox/
-=======
-*.pyd
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-*.spec
-*.manifest
-*.pdb
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
->>>>>>> 07e916b62679c3c5a84cdc9b692cbadac209434d
 .coverage
 .coverage.*
 .cache

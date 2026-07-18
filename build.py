@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import shutil
 
 print("=" * 50)
 print("AmazingStreetCleaner - Сборка .exe")
@@ -8,11 +9,9 @@ print("=" * 50)
 
 for folder in ['dist', 'build']:
     if os.path.exists(folder):
-        import shutil
         shutil.rmtree(folder)
         print(f"[CLEAN] Удалена папка {folder}")
 
-print("[BUILD] Запуск сборки...")
 cmd = [
     sys.executable, '-m', 'PyInstaller',
     '--onefile',

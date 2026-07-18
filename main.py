@@ -1,17 +1,16 @@
+import sys
 import threading
 import time
-import gc
-import sys
 
 from pynput import keyboard
 from PIL import ImageGrab
 import numpy as np
 from PyQt5.QtWidgets import QApplication
 
-from config import HOLD, COOLDOWN
+from config import load_config
 from core.matcher import Matcher
 from core.keyboard import press_key, release_all
-from core.region import get_region
+from core.screen import get_region
 from gui.main_window import MainWindow
 
 
@@ -24,20 +23,16 @@ class App:
         self.loop_thread = None
         self.listener = None
         self.gui = None
-        self.frame_count = 0
 
-    def start_listener(self):
-        def on_press(key):
-            if key == keyboard.Key.f9:
-                self.toggle()
-                return False
-            return True
-
-        if self.listener:
-            self.listener.stop()
-        self.listener = keyboard.Listener(on_press=on_press)
+        self.listener = keyboard.Listener(on_press=self._on_press)
         self.listener.daemon = True
         self.listener.start()
+
+    def _on_press(self, key):
+        if key == keyboard.Key.f9:
+            self.toggle()
+            return False
+        return True
 
     def loop(self):
         while self.running:
@@ -45,6 +40,7 @@ class App:
                 time.sleep(0.05)
                 continue
             try:
+                config = load_config()
                 screenshot = ImageGrab.grab(bbox=self.region)
                 gray = np.array(screenshot.convert('L'), dtype=np.uint8)
 
@@ -53,21 +49,17 @@ class App:
                 if key:
                     if self.gui:
                         self.gui.log_info(f"Удерживается {key} ({score}%)")
-                    press_key(key, HOLD)
+                    press_key(key, config["HOLD"])
                 else:
                     press_key('e', 0.2)
                     if self.gui:
                         self.gui.log_warning(f"Нет совпадений ({score}%)")
 
-                self.frame_count += 1
-                time.sleep(COOLDOWN)
+                time.sleep(config["COOLDOWN"])
             except Exception as e:
                 if self.gui:
                     self.gui.log_error(f"Ошибка: {e}")
                 time.sleep(0.5)
-            finally:
-                if self.frame_count % 100 == 0:
-                    gc.collect()
 
     def start(self):
         if not self.enabled:
@@ -79,7 +71,6 @@ class App:
             if not self.loop_thread or not self.loop_thread.is_alive():
                 self.loop_thread = threading.Thread(target=self.loop, daemon=True)
                 self.loop_thread.start()
-            self.start_listener()
 
     def stop(self):
         self.enabled = False
@@ -87,7 +78,6 @@ class App:
         if self.gui:
             self.gui.log_info("Остановлено")
             self.gui.update_status()
-        self.start_listener()
 
     def toggle(self):
         if self.enabled:
@@ -109,7 +99,6 @@ if __name__ == '__main__':
     auto_app = App()
     window = MainWindow(auto_app)
     auto_app.gui = window
-    auto_app.start_listener()
     window.log_info("Нажмите F9 для старта")
     window.show()
 

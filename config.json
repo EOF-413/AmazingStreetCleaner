@@ -1,0 +1,6 @@
+{
+    "HOLD": 1.25,
+    "COOLDOWN": 0.75,
+    "MIN_DEF_KEYS": 0.45,
+    "MIN_DIG_KEYS": 0.35
+}
