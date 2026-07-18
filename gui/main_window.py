@@ -54,7 +54,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.app = app
 
-        self.setWindowTitle("AmazingAutoHotkeys")
+        self.setWindowTitle("AmazingStreetCleaner")
         self.setFixedSize(420, 650)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
@@ -118,7 +118,7 @@ class MainWindow(QMainWindow):
         layout.setSpacing(10)
         layout.setContentsMargins(15, 15, 15, 15)
 
-        title = QLabel("AmazingAutoHotkeys")
+        title = QLabel("AmazingStreetCleaner")
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("font-size: 18px; font-weight: bold; color: #ffffff; padding: 10px;")
         layout.addWidget(title)
