@@ -1,12 +1,4 @@
-<<<<<<< HEAD
 # Python
-=======
-
-## **.gitignore**
-
-```gitignore
-# Byte-compiled / optimized / DLL files
->>>>>>> 07e916b62679c3c5a84cdc9b692cbadac209434d
 __pycache__/
 *.py[cod]
 *$py.class
@@ -316,7 +308,6 @@ Thumbs.db
 *.gif
 *.bmp
 *.tiff
-*.ico
 *.svg
 
 # Config files with sensitive data
