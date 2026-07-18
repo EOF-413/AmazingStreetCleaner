@@ -30,9 +30,14 @@ class Matcher:
         templates = {}
         for key in KEYS:
             try:
-                img = cv2.imread(resource_path(f'templates/{key}.png'), cv2.IMREAD_GRAYSCALE)
+                path = resource_path(f'templates/{key}.png')
+                print(f"[MATCHER] Загрузка шаблона: {path}")
+                img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
                 if img is not None:
                     templates[key] = img
+                    print(f"[MATCHER] ✅ {key} загружен")
+                else:
+                    print(f"[MATCHER] ❌ Не удалось загрузить {key} по пути {path}")
             except Exception as e:
                 logging.exception(f"Ошибка загрузки шаблона {key}:", e)
         return templates
