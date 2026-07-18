@@ -1,8 +1,8 @@
-# 🚀 AmazingAutoHotkeys
+# 🚀 AmazingStreetCleaner
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/EOF-413/AmazingAutoHotkeys)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/EOF-413/AmazingStreetCleaner)
 [![Python](https://img.shields.io/badge/python-3.11.0-yellow.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Windows](https://img.shields.io/badge/platform-Windows-blue.svg)](https://www.microsoft.com/windows)
@@ -17,8 +17,8 @@
 
 ## 📋 Описание
 
-AmazingAutoHotkeys - это программа для автоматического нажатия клавиш на основе распознавания шаблонов на экране. 
-Создана для удобной работы в играх и приложениях, где требуется автоматизация повторяющихся действий.
+AmazingStreetCleaner - это программа для автоматического нажатия клавиш на основе распознавания шаблонов на экране. 
+Создана для удобной работы в AMAZING ONLINE, где требуется автоматизация повторяющихся действий.
 
 ### ✨ Возможности
 
@@ -38,5 +38,20 @@ AmazingAutoHotkeys - это программа для автоматическо
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/EOF-413/AmazingAutoHotkeys.git
-cd AmazingAutoHotkeys
+# Клонирование исходников
+git clone https://github.com/EOF-413/AmazingStreetCleaner.git
+
+# Вход в каталог
+cd AmazingStreetCleaner
+
+# Создание виртуального окружения
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# Linux/Mac
+source venv/bin/activate
+
+# Установка зависимостей
+pip install -r requirements.txt
