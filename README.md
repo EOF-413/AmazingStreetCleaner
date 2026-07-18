@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🚀 AmazingStreetCleaner
 
 <div align="center">
