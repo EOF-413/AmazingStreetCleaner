@@ -1,0 +1,13 @@
+HOLD = 1.25
+COOLDOWN = 0.75
+MIN_DEF_KEYS = 0.45
+MIN_DIG_KEYS = 0.35
+
+DIG_KEYS = ['L_SHIFT', 'L_CTRL', 'L_ALT']
+DEF_KEYS = ['A', 'C', 'D', 'E', 'J', 'K', 'L', 'N', 'Q', 'R', 'S', 'W']
+KEYS = DIG_KEYS + DEF_KEYS
+
+X1_RATIO = 0.4427
+Y1_RATIO = 0.6944
+X2_RATIO = 0.5547
+Y2_RATIO = 0.8102

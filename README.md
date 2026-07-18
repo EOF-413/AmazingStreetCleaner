@@ -1,0 +1,42 @@
+# 🚀 AmazingAutoHotkeys
+
+<div align="center">
+
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/EOF-413/AmazingAutoHotkeys)
+[![Python](https://img.shields.io/badge/python-3.11.0-yellow.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Windows](https://img.shields.io/badge/platform-Windows-blue.svg)](https://www.microsoft.com/windows)
+[![Linux](https://img.shields.io/badge/platform-Linux-purple.svg)](https://www.microsoft.com/windows)
+[![Mac](https://img.shields.io/badge/platform-Mac-white.svg)](https://www.microsoft.com/windows)
+
+**Автоматическое нажатие клавиш по шаблонам на экране**
+
+</div>
+
+---
+
+## 📋 Описание
+
+AmazingAutoHotkeys - это программа для автоматического нажатия клавиш на основе распознавания шаблонов на экране. 
+Создана для удобной работы в играх и приложениях, где требуется автоматизация повторяющихся действий.
+
+### ✨ Возможности
+
+- 🎯 **Распознавание шаблонов** - использует OpenCV для поиска изображений на экране
+- ⌨️ **Автоматическое нажатие клавиш** - через Win32 API
+
+- ⚡ **Высокая скорость** - задержка менее 1мс
+- 🚀 **Поддержка CUDA** - ускорение распознавания на видеокартах NVIDIA
+
+- 🎨 **Современный интерфейс** - тёмная тема на PyQt5
+- 🔧 **Гибкие настройки** - все параметры можно менять в реальном времени
+
+---
+
+## 📦 Установка
+
+### 1. Клонирование репозитория
+
+```bash
+git clone https://github.com/EOF-413/AmazingAutoHotkeys.git
+cd AmazingAutoHotkeys
