@@ -1,13 +1,14 @@
-from datetime import datetime
-import os
 import sys
+from os import path
+from datetime import datetime
+from logging import exception
 
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
+from PyQt5.QtGui import QColor, QTextCharFormat, QTextCursor, QIcon
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton, QTextEdit, QGroupBox, QGridLayout
 )
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QColor, QTextCharFormat, QTextCursor, QIcon
 
 from config import load_config, save_config
 
@@ -16,8 +17,8 @@ def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
     except AttributeError:
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
+        base_path = path.abspath(".")
+    return path.join(base_path, relative_path)
 
 
 class ColoredTextEdit(QTextEdit):
@@ -31,6 +32,25 @@ class ColoredTextEdit(QTextEdit):
                 border: none;
                 font-family: Consolas;
                 font-size: 10pt;
+            }
+            QScrollBar:vertical {
+                background: #2a2a2a;
+                width: 10px;
+                margin: 0px;
+            }
+            QScrollBar::handle:vertical {
+                background: #555555;
+                min-height: 20px;
+                border-radius: 5px;
+            }
+            QScrollBar::handle:vertical:hover {
+                background: #777777;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+            }
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
             }
         """)
         self.formats = {
@@ -58,16 +78,18 @@ class ColoredTextEdit(QTextEdit):
 
 
 class MainWindow(QMainWindow):
+    append_text = pyqtSignal(str, str)
+
     def __init__(self, app):
         super().__init__()
         self.app = app
 
         self.setWindowTitle("AmazingStreetCleaner")
-        self.setMinimumSize(400, 600)
+        self.setMinimumSize(300, 450)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
         icon_path = resource_path('icon.ico')
-        if os.path.exists(icon_path):
+        if path.exists(icon_path):
             try:
                 self.setWindowIcon(QIcon(icon_path))
             except Exception:
@@ -200,10 +222,15 @@ class MainWindow(QMainWindow):
 
         layout.addWidget(bottom_frame)
 
+        self.append_text.connect(self._append_text_slot)
+
         self.update_gpu_status()
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_gpu_status)
         self.timer.start(5000)
+
+    def _append_text_slot(self, text, tag):
+        self.log_area.append_colored(text, tag)
 
     def _update_config(self):
         changed = False
@@ -212,29 +239,29 @@ class MainWindow(QMainWindow):
             if 0.1 <= val <= 3.0:
                 self.config["HOLD"] = val
                 changed = True
-        except Exception:
-            pass
+        except Exception as e:
+            exception("Ошибка обновления HOLD:", e)
         try:
             val = float(self.cooldown_edit.text())
             if 0.1 <= val <= 2.0:
                 self.config["COOLDOWN"] = val
                 changed = True
-        except Exception:
-            pass
+        except Exception as e:
+            exception("Ошибка обновления COOLDOWN:", e)
         try:
             val = float(self.min_def_edit.text())
             if 0.1 <= val <= 0.9:
                 self.config["MIN_DEF_KEYS"] = val
                 changed = True
-        except Exception:
-            pass
+        except Exception as e:
+            exception("Ошибка обновления MIN_DEF_KEYS:", e)
         try:
             val = float(self.min_dig_edit.text())
             if 0.1 <= val <= 0.9:
                 self.config["MIN_DIG_KEYS"] = val
                 changed = True
-        except Exception:
-            pass
+        except Exception as e:
+            exception("Ошибка обновления MIN_DIG_KEYS:", e)
         if changed:
             save_config(self.config)
 
@@ -242,11 +269,12 @@ class MainWindow(QMainWindow):
         try:
             status = self.app.matcher.get_gpu_status()
             self.gpu_label.setText(status)
-        except Exception:
+        except Exception as e:
+            exception("Ошибка обновления статуса GPU:", e)
             self.gpu_label.setText("❌ Ошибка проверки GPU")
 
     def log(self, message, tag='default'):
-        self.log_area.append_colored(message, tag)
+        self.append_text.emit(message, tag)
 
     def log_info(self, message):
         self.log(message, 'info')
@@ -262,8 +290,11 @@ class MainWindow(QMainWindow):
         self.gpu_label.setText(message)
 
     def toggle(self):
-        self.app.toggle()
-        self.update_status()
+        try:
+            self.app.toggle()
+            self.update_status()
+        except Exception as e:
+            exception("Ошибка при переключении:", e)
 
     def update_status(self):
         if self.app.enabled:
@@ -276,5 +307,8 @@ class MainWindow(QMainWindow):
             self.start_btn.setStyleSheet(self.start_btn.styleSheet())
 
     def closeEvent(self, event):
-        self.app.cleanup()
+        try:
+            self.app.cleanup()
+        except Exception as e:
+            exception("Ошибка при очистке:", e)
         event.accept()

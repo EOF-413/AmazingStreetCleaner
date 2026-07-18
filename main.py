@@ -1,17 +1,34 @@
 import sys
-import threading
-import time
 
-from pynput import keyboard
-from PIL import ImageGrab
+from time import sleep
+from threading import Thread
+from logging import basicConfig, ERROR, exception
+from os import path
+
 import numpy as np
+from PIL import ImageGrab
+from pynput import keyboard
 from PyQt5.QtWidgets import QApplication
 
 from config import load_config
-from core.matcher import Matcher
 from core.keyboard import press_key, release_all
+from core.matcher import Matcher
 from core.screen import get_region
 from gui.main_window import MainWindow
+
+
+def setup_logging():
+    if getattr(sys, 'frozen', False):
+        log_dir = path.dirname(sys.executable)
+    else:
+        log_dir = path.dirname(path.abspath(__file__))
+    log_file = path.join(log_dir, 'log.txt')
+    basicConfig(
+        filename=log_file,
+        level=ERROR,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        encoding='utf-8'
+    )
 
 
 class App:
@@ -37,7 +54,7 @@ class App:
     def loop(self):
         while self.running:
             if not self.enabled:
-                time.sleep(0.05)
+                sleep(0.05)
                 continue
             try:
                 config = load_config()
@@ -55,11 +72,12 @@ class App:
                     if self.gui:
                         self.gui.log_warning(f"Нет совпадений ({score}%)")
 
-                time.sleep(config["COOLDOWN"])
+                sleep(config["COOLDOWN"])
             except Exception as e:
+                exception("Ошибка в основном цикле:", e)
                 if self.gui:
                     self.gui.log_error(f"Ошибка: {e}")
-                time.sleep(0.5)
+                sleep(0.5)
 
     def start(self):
         if not self.enabled:
@@ -69,7 +87,7 @@ class App:
                 self.gui.log_info(f"Запущено на {status}")
                 self.gui.update_status()
             if not self.loop_thread or not self.loop_thread.is_alive():
-                self.loop_thread = threading.Thread(target=self.loop, daemon=True)
+                self.loop_thread = Thread(target=self.loop, daemon=True)
                 self.loop_thread.start()
 
     def stop(self):
@@ -94,12 +112,20 @@ class App:
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    setup_logging()
+    try:
+        app = QApplication(sys.argv)
+        auto_app = App()
+        window = MainWindow(auto_app)
+        auto_app.gui = window
+        window.log_info("Нажмите F9 для старта")
+        window.show()
+        exit_code = app.exec_()
 
-    auto_app = App()
-    window = MainWindow(auto_app)
-    auto_app.gui = window
-    window.log_info("Нажмите F9 для старта")
-    window.show()
-
-    sys.exit(app.exec_())
+        sys.exit(exit_code)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print("\nПрограмма завершена с ошибкой:", e)
+        input("Нажмите Enter для выхода...")
+        sys.exit(1)

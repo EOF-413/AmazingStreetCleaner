@@ -1,7 +1,8 @@
-import time
-import ctypes
+from logging import exception
+from time import sleep
+from ctypes import windll
 
-user32 = ctypes.windll.user32
+user32 = windll.user32
 
 VK = {
     'a': 0x41, 'c': 0x43, 'd': 0x44, 'e': 0x45,
@@ -42,7 +43,7 @@ def press_key(key, hold):
         else:
             user32.keybd_event(vk, sc, KEYEVENTF_KEYDOWN, 0)
 
-        time.sleep(hold)
+        sleep(hold)
 
         if is_modifier:
             user32.keybd_event(vk, sc, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0)
@@ -50,7 +51,7 @@ def press_key(key, hold):
             user32.keybd_event(vk, sc, KEYEVENTF_KEYUP, 0)
 
     except Exception as e:
-        print(f"[KEYBOARD ERROR] {e}")
+        exception(f"Ошибка нажатия клавиши {key}:", e)
 
 
 def release_all():
@@ -66,6 +67,6 @@ def release_all():
                 else:
                     user32.keybd_event(vk, sc, KEYEVENTF_KEYUP, 0)
             except Exception:
-                pass
+                exception(f"Ошибка отпускания клавиши {key}")
     except Exception:
         pass

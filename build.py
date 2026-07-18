@@ -14,17 +14,13 @@ for folder in ['dist', 'build']:
 
 cmd = [
     sys.executable, '-m', 'PyInstaller',
+    '--console',
     '--onefile',
-    '--noconsole',
-    '--name=AmazingStreetCleaner',
-    '--add-data=templates;templates',
-    '--hidden-import=PyQt5',
-    '--hidden-import=cv2',
-    '--hidden-import=numpy',
-    '--hidden-import=PIL',
-    '--hidden-import=pynput',
-    '--clean',
-    '--noconfirm',
+    '--noupx',
+    '--strip',
+    '--exclude-module', 'matplotlib',
+    '--exclude-module', 'scipy',
+    '--name=ASC',
     'main.py'
 ]
 

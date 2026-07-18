@@ -1,6 +1,9 @@
-import sys
+import logging
 import os
+import sys
+
 import cv2
+
 from config import KEYS, load_config
 
 
@@ -30,8 +33,8 @@ class Matcher:
                 img = cv2.imread(resource_path(f'templates/{key}.png'), cv2.IMREAD_GRAYSCALE)
                 if img is not None:
                     templates[key] = img
-            except Exception:
-                pass
+            except Exception as e:
+                logging.exception(f"Ошибка загрузки шаблона {key}:", e)
         return templates
 
     def process(self, gray):
@@ -57,8 +60,8 @@ class Matcher:
                 if score > best_score:
                     best_score = score
                     best_key = key
-            except Exception:
-                continue
+            except Exception as e:
+                logging.exception(f"Ошибка обработки шаблона {key}:", e)
 
         if best_key is None:
             return None, round(best_score * 100, 1)
