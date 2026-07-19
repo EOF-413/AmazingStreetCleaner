@@ -1,5 +1,6 @@
 import ctypes
-from config import X1_RATIO, Y1_RATIO, X2_RATIO, Y2_RATIO
+
+from src.config import X1_RATIO, Y1_RATIO, X2_RATIO, Y2_RATIO
 
 
 def get_region():
