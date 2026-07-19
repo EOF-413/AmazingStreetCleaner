@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (
     QLabel, QPushButton, QTextEdit, QGroupBox, QTabWidget
 )
 
-from src.config import load_config, VERSION
+from src.config import load_config, VER, APP_FULL_NAME
 from src.frontend.settings import SettingsTab
 
 
@@ -87,7 +87,7 @@ class MainWindow(QMainWindow):
         self.app = app
         self.config = load_config()
 
-        self.setWindowTitle("AmazingStreetCleaner")
+        self.setWindowTitle(f"{APP_FULL_NAME}")
         self.resize(500, 550)
         self.setMinimumSize(300, 350)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
@@ -173,12 +173,12 @@ class MainWindow(QMainWindow):
         header_layout.setSpacing(0)
         header_layout.setContentsMargins(0, 0, 0, 10)
 
-        title = QLabel("AmazingStreetCleaner")
+        title = QLabel(f"{APP_FULL_NAME}")
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("font-size: 18px; font-weight: bold; color: #ffffff;")
         header_layout.addWidget(title)
 
-        version_label = QLabel(f"v{VERSION}")
+        version_label = QLabel(f"v{VER}")
         version_label.setAlignment(Qt.AlignCenter)
         version_label.setStyleSheet("font-size: 15px; color: #888888;")
         header_layout.addWidget(version_label)

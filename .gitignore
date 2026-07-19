@@ -22,6 +22,7 @@ build/
 *.swo
 *~
 .DS_Store
+.gitignore
 
 # Project specific
 *.log
@@ -35,7 +36,7 @@ build/
 *.spec
 dist/
 build/
-filess/
+files/
 
 # Logs
 logs/
