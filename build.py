@@ -23,7 +23,7 @@ print("\n[1/4] Сборка .exe...")
 cmd = [
     sys.executable, '-m', 'PyInstaller',
     '--onedir',
-    '--console',
+    '--noconsole',
     '--strip',
     '--noupx',
     '--exclude-module', 'matplotlib',

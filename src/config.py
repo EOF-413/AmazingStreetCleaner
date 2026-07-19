@@ -7,7 +7,7 @@ Y1_RATIO = 0.6944
 X2_RATIO = 0.5547
 Y2_RATIO = 0.8102
 
-VERSION = "3.0.0"
+VERSION = "3.0.1"
 
 KEYS = ['SHIFT', 'CTRL', 'ALT', 'A', 'C', 'D', 'E', 'J', 'K', 'L', 'N', 'Q', 'R', 'S', 'W']
 
