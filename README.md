@@ -1,4 +1,4 @@
-# 🚀 AmazingStreetCleaner
+# 🚀 Amazing Street Cleaner
 
 <div align="center">
 
@@ -15,7 +15,7 @@
 
 ## 📋 Описание
 
-AmazingStreetCleaner - это программа для автоматического нажатия клавиш на работе уборщика улиц, проекта AMAZING ONLINE.
+Amazing Street Cleaner - это программа для автоматического нажатия клавиш на работе уборщика улиц, проекта AMAZING ONLINE.
 
 ### ✨ Возможности
 
