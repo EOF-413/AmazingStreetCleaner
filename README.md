@@ -8,7 +8,6 @@
 [![Windows](https://img.shields.io/badge/platform-Windows-blue.svg)](https://www.microsoft.com/windows)
 
 </div>
-
 ## 📋 Описание
 
 Amazing Street Cleaner - это программа для автоматического нажатия клавиш на работе уборщика улиц, проекта AMAZING ONLINE.
