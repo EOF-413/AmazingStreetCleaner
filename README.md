@@ -3,8 +3,8 @@
 <div align="center">
 
 [![Python](https://img.shields.io/badge/python-3.11.0-yellow.svg)](https://www.python.org/)
-[![Version](https://img.shields.io/badge/version-3.2.0-purple.svg)](https://github.com/EOF-413/AmazingStreetCleaner)
 [![Windows](https://img.shields.io/badge/platform-Windows-blue.svg)](https://www.microsoft.com/windows)
+[![Version](https://img.shields.io/badge/version-3.2.0-purple.svg)](https://github.com/EOF-413/AmazingStreetCleaner)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 </div>
