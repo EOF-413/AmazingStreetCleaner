@@ -1,7 +1,7 @@
 import os
 import json
 
-VER = "3.1.0"
+VER = "3.2.0"
 APP_NAME = "ASC"
 APP_FULL_NAME = "Amazing Street Cleaner"
 
